@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: onetn15-app
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build && cd server && npm install
+    startCommand: cd server && node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: onetn15-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 3001
+
+databases:
+  - name: onetn15-db
+    databaseName: cms_db
+    user: postgres
+    plan: free
