@@ -29,6 +29,35 @@ import NewsForm from "./cms/pages/NewsForm";
 import MediaList from "./cms/pages/MediaList";
 import MediaForm from "./cms/pages/MediaForm";
 
+// Error Boundary
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('React Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '20px', color: 'red' }}>
+          <h1>Something went wrong</h1>
+          <p>{this.state.error?.message}</p>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 function Header() {
   const { theme, toggleTheme, themeLabels } = useTheme();
 
@@ -116,16 +145,17 @@ function NewsPost({ id, title, date, author, excerpt }) {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<div className="layout-container"><Header /><Home /><Footer /></div>} />
-            <Route path="/about" element={<div className="layout-container"><Header /><About /><Footer /></div>} />
-            <Route path="/services" element={<div className="layout-container"><Header /><Services /><Footer /></div>} />
-            <Route path="/products" element={<div className="layout-container"><Header /><Products /><Footer /></div>} />
-            <Route path="/news/:cat/:subcat/:slug" element={<div className="layout-container"><Header /><NewsDetail /><Footer /></div>} />
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<div className="layout-container"><Header /><Home /><Footer /></div>} />
+              <Route path="/about" element={<div className="layout-container"><Header /><About /><Footer /></div>} />
+              <Route path="/services" element={<div className="layout-container"><Header /><Services /><Footer /></div>} />
+              <Route path="/products" element={<div className="layout-container"><Header /><Products /><Footer /></div>} />
+              <Route path="/news/:cat/:subcat/:slug" element={<div className="layout-container"><Header /><NewsDetail /><Footer /></div>} />
 
             {/* CMS routes */}
             <Route path="/cms/login" element={<LoginPage />} />
@@ -237,6 +267,7 @@ function App() {
         </Router>
       </AuthProvider>
     </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
