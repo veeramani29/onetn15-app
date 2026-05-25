@@ -59,9 +59,10 @@ function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
+        const apiBase = process.env.REACT_APP_API_BASE_URL || '';
         const [newsRes, navRes] = await Promise.all([
-          axios.get("/api/news"),
-          axios.get("/api/navigation"),
+          axios.get(`${apiBase}/api/news`),
+          axios.get(`${apiBase}/api/navigation`),
         ]);
         // Sanitize response data
         const sanitizedNews = sanitizeAPIResponse(newsRes.data.news || []);

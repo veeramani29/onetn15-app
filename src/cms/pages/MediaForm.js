@@ -65,7 +65,8 @@ function MediaForm() {
     formDataUpload.append("file", file);
 
     try {
-      const response = await fetch("/api/upload", {
+      const apiBase = process.env.REACT_APP_API_BASE_URL || '';
+      const response = await fetch(`${apiBase}/api/upload`, {
         method: "POST",
         body: formDataUpload,
       });

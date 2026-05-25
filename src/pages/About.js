@@ -9,7 +9,8 @@ function About() {
   useEffect(() => {
     async function fetchNavigation() {
       try {
-        const res = await axios.get("/api/navigation");
+        const apiBase = process.env.REACT_APP_API_BASE_URL || '';
+        const res = await axios.get(`${apiBase}/api/navigation`);
         // Sanitize response data
         const sanitizedData = sanitizeAPIResponse(res.data);
         setNavigation(sanitizedData);

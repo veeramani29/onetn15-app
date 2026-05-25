@@ -1,4 +1,4 @@
-const API_BASE = "/api";
+const API_BASE = process.env.REACT_APP_API_BASE_URL || "";
 
 async function fetchWithAuth(endpoint, options = {}) {
   const token = localStorage.getItem("cms_token");
@@ -8,7 +8,7 @@ async function fetchWithAuth(endpoint, options = {}) {
     ...options.headers,
   };
 
-  const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+  const response = await fetch(`${API_BASE}/api${endpoint}`, { ...options, headers });
 
   if (response.status === 401) {
     localStorage.removeItem("cms_token");
@@ -28,7 +28,7 @@ async function fetchWithAuth(endpoint, options = {}) {
 export const api = {
   // Auth
   login: (username, password) =>
-    fetch("/api/auth/login", {
+    fetch(`${API_BASE}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),

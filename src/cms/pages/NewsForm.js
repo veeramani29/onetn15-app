@@ -268,7 +268,8 @@ function NewsForm() {
                     const formData = new FormData();
                     formData.append('file', file);
 
-                    fetch('/api/upload', {
+                    const apiBase = process.env.REACT_APP_API_BASE_URL || '';
+                    fetch(`${apiBase}/api/upload`, {
                       method: 'POST',
                       body: formData
                     })
