@@ -6,7 +6,8 @@ const path = require('path');
 const { apiLimiter, authLimiter, securityHeaders, sanitizeInput, requestSizeLimiter } = require('./middleware/security');
 
 const app = express();
-const PORT = process.env.BE_PORT || 3001;
+const HOST = process.env.BE_HOST || '0.0.0.0';
+const PORT = process.env.BE_PORT || process.env.PORT || 3001;
 
 // Security headers
 app.use(securityHeaders);
@@ -65,6 +66,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: errorMessage });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`[server] Server running on http://${HOST}:${PORT}`);
+  console.log(`[server] Host: ${HOST}`);
+  console.log(`[server] Port: ${PORT}`);
 });
