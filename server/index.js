@@ -6,7 +6,7 @@ const path = require('path');
 const { apiLimiter, authLimiter, securityHeaders, sanitizeInput, requestSizeLimiter } = require('./middleware/security');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.BE_PORT || 3001;
 
 // Security headers
 app.use(securityHeaders);
